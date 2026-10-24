@@ -1,0 +1,39 @@
+# Kinetiq builder quick reference
+
+> Facts for coding agents building on Kinetiq (Hyperliquid): Elysium L2, kHYPE liquid staking, Markets by Kinetiq HIP-3 perps, Kinetiq Launch. Checked 2026-10-24. Every value is sourced in references/contracts.md. Testnet first; confirm every transaction with the user; never handle private keys.
+
+## Networks
+- HyperEVM mainnet: chain 999, RPC https://rpc.hyperliquid.xyz/evm, viem `hyperEvm`
+- HyperEVM testnet: chain 998, RPC https://rpc.hyperliquid-testnet.xyz/evm, viem `hyperliquidEvmTestnet`
+- Elysium testnet: chain 99801, gas HYPE, RPC https://testnet-rpc.elysium.kinetiq.xyz, explorer https://elysium.kinetiq.xyz/testnet-explorer, faucet https://elysium.kinetiq.xyz/testnet-faucet
+- Elysium mainnet: announced for 9 Nov 2026; chain ID, RPC and addresses NOT PUBLISHED
+- Hyperliquid API: POST https://api.hyperliquid.xyz/info ; WS wss://api.hyperliquid.xyz/ws
+- Markets trading API: https://trading-api.markets.xyz (mainnet only, hlk_ API key)
+
+## kHYPE on HyperEVM mainnet (999)
+- kHYPE token: 0xfD739d4e423301CE9385c1fb8850539D657C296D
+- StakingManager (stake, queueWithdrawal, confirmWithdrawal): 0x393D0B87Ed38fc779FD9611144aE649BA6082109
+- StakingAccountant (kHYPEToHYPE, HYPEToKHYPE): 0x9209648Ec9D448EF57116B73A2f081835643dc7A
+- Min stake 5 HYPE; 0 for maxStakeAmount/stakingLimit means no cap; approve StakingManager before queueWithdrawal; exit about 8 to 9 days
+
+## Markets by Kinetiq
+- Live HIP-3 dex: `mkts` (USDC). Legacy `km` (USDH) fully delisted
+- Live on 2026-10-24: mkts:US500, mkts:USTECH, mkts:SMALL2000, mkts:USBOND, mkts:BVIV
+- Deployer of both dexes: kmHYPE StakingManager 0x71F0019cC7fa79E4f42587FB7b9a817D8d2429EC
+- Book: {"type":"l2Book","coin":"mkts:US500"} ; markets: {"type":"metaAndAssetCtxs","dex":"mkts"}
+
+## Elysium traps
+- viem `elysiumTestnet` is chain 1338, not Kinetiq. Use defineChain id 99801. "99901" in posts is wrong
+- No HyperEVM precompiles or CoreWriter on Elysium (until about 4 weeks after mainnet)
+- `block.number` returns the HyperEVM block; use block.timestamp or ArbSys(0x64).arbBlockNumber()
+- Plain transfer about 21,170 gas; no public mempool
+- Verify: forge verify-contract ADDR src/X.sol:X --chain 99801 --verifier blockscout --verifier-url https://testnet.elysium.kinetiq.xyz/api/verify --skip-is-verified-check --watch
+
+## Docs
+- [SKILL.md](SKILL.md): routing, rules, workflows, gotchas, FAQ
+- [references/contracts.md](references/contracts.md): every address, chain ID, RPC with source
+- [references/elysium.md](references/elysium.md): scaffold, deploy, verify, bridge, roadmap, builder program
+- [references/khype-integration.md](references/khype-integration.md): rate, stake, unstake, wrappers, collateral
+- [references/markets-and-launch.md](references/markets-and-launch.md): Hyperliquid API, Markets trading API, Launch EaaS
+- [references/starter-ideas.md](references/starter-ideas.md): nine app ideas with checklists
+- Official: https://kinetiq.xyz/docs , https://elysium.kinetiq.xyz/docs , https://markets.xyz/docs

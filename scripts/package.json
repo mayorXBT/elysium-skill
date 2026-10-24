@@ -1,0 +1,17 @@
+{
+  "name": "kinetiq-skill-scripts",
+  "private": true,
+  "type": "module",
+  "description": "Read-only helper scripts for the kinetiq agent skill. No private keys, no transactions.",
+  "scripts": {
+    "khype": "tsx read-khype-rate.ts",
+    "elysium": "tsx elysium-check.ts",
+    "markets": "tsx markets-snapshot.ts"
+  },
+  "dependencies": {
+    "viem": "^2.57.11"
+  },
+  "devDependencies": {
+    "tsx": "^4.20.0"
+  }
+}
